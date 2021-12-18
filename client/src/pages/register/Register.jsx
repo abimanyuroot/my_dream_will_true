@@ -1,4 +1,4 @@
-import axios from "axios";
+import {axiosInstance} from "./../../config";
 import { useRef } from "react";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -10,9 +10,6 @@ export default function Register() {
   const [username, setUsername] = useState("");
   const history = useHistory();
 
-  const axiosInstance =axios.create({
-    baseURL:process.env.REACT_APP_API_URL,
-  });
 
 
   const emailRef = useRef();

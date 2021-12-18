@@ -10,7 +10,7 @@ const cors      =  require("cors");
 const path      =require('path');
 
 dotenv.config();
-port=process.env.PORT
+port=process.env.PORT ||8800
 
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -31,15 +31,26 @@ app.use("/api/users", userRoute);
 app.use("/api/movies", movieRoute);
 app.use("/api/lists", listRoute);
 
-//serve static assets if in production
-if(process.env.NODE_ENV ==="production"){
-  //set static folder
-  app.use(express.static('client/build'));
-  app.get('*',(req,res)=>{
-    res.sendFile(path.resolve(__dirname,'client','build','index.html'));
+// serve static assets if in production
+// if(process.env.NODE_ENV ==="production"){
+//  set static folder
+//    app.use(express.static('client/build'));
+//   app.get('*',(req,res)=>{
+//     res.sendFile(path.resolve(__dirname,'client','build','index.html'));
+//   });
+// }
+
+__dirname =path.resolve();
+if(process.env.NODE_ENV ==='production'){
+  app.use(express.static(path.join(__dirname,"client","build")));
+  app.get("*",(req,res)=>{
+    res.sendFile(path.resolve(__dirname,"client",'build',"index.html"));
+  });
+}else{
+  app.get('/',(req,res)=>{
+    res.send("API is running...");
   });
 }
-
 
 app.listen(port, () => {
   console.log(`Backend server is running! http://localhost:${port}`);
